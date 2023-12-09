@@ -3,7 +3,6 @@ import pandas as pd
 import sys, logging
 from shared.db import create_sqlite_connection, fetch_data, commit_data
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-# create table accounts ( name TEXT, balance REAL, currency TEXT, PRIMARY KEY(name));
 
 def main():
     st.set_page_config(page_title="Account Table", layout="wide")

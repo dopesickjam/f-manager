@@ -3,14 +3,6 @@ import pandas as pd
 import sys, logging, sqlite3
 from shared.db import create_sqlite_connection, fetch_data, commit_data
 
-# CREATE TABLE categories (
-#     categories_id INTEGER PRIMARY KEY AUTOINCREMENT, 
-#     root_category INTEGER, 
-#     parent_category TEXT,
-#     category_name TEXT,
-#     category_type TEXT
-# );
-
 def main():
     data = fetch_data("SELECT category_name, parent_category, root_category, category_type FROM categories")
 
