@@ -4,6 +4,8 @@ import sys, logging
 from shared.db import create_sqlite_connection, fetch_data, commit_data
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
+# TO DO:
+# add a drop-down list from which you can select which wallet can be deleted
 def main():
     st.set_page_config(page_title="Account Table", layout="wide")
     st.title("Account Table Page")

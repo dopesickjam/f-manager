@@ -4,6 +4,9 @@ import sys, logging, sqlite3
 from shared.db import create_sqlite_connection, fetch_data, commit_data
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
+# TO DO:
+# add opportunity to set desired order for category, not by alphabet order
+
 def main():
     data = fetch_data("SELECT category_name, parent_category, root_category, category_type FROM categories")
 

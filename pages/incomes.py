@@ -5,6 +5,10 @@ import sys, logging, sqlite3
 from shared.db import create_sqlite_connection, fetch_data, commit_data, get_category_list
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
+# TO do:
+# category by desired order
+# add opportunity to set custom date
+
 def main():
     #
     data = fetch_data("SELECT name FROM accounts")
