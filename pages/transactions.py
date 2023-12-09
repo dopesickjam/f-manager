@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime
 import sys, logging, sqlite3
 from shared.db import create_sqlite_connection, fetch_data
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 def main():
     data = fetch_data("SELECT transaction_type, account, category, amount, currency, transaction_date, transaction_description FROM transactions")

@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime
 import sys, logging, sqlite3
 from shared.db import create_sqlite_connection, fetch_data, commit_data, get_category_list
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 def main():
     #
