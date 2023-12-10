@@ -22,7 +22,7 @@ def main():
         from_account            = st.selectbox("From", accounts_list)
         to_account              = st.selectbox("To", accounts_list)
         transfer_amount         = st.number_input("Transfer Amount")
-        operation_date          = st.date_input("Date", value="today", format="DD-MM-YYYY")
+        operation_date          = st.date_input("Date", value="today", format="YYYY-MM-DD")
         transaction_description = st.text_input("Comment")
         submitted               = st.form_submit_button("Submit")
     #
@@ -41,12 +41,11 @@ def main():
         commit_data(f"UPDATE accounts SET balance={new_from_balance} WHERE name='{from_account}'")
         commit_data(f"UPDATE accounts SET balance={new_to_balance} WHERE name='{to_account}'")
 
-        formatted_date = operation_date.strftime("%d-%m-%Y")
         sql_query = (
             f"INSERT INTO transactions (transaction_type, global_name,"
             f"account, amount, currency, transaction_date, transaction_description)"
             f"VALUES ('Transfer', 'Transfer', '{from_account}',"
-            f"'{transfer_amount}', 'UAH', '{formatted_date}',"
+            f"'{transfer_amount}', 'UAH', '{operation_date}',"
             f"'{transaction_description}')"
         )
         commit_data(sql_query)

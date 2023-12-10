@@ -22,9 +22,9 @@ def main():
         transaction_list        = ["Income"]
         transaction_type        = st.selectbox("Type", transaction_list)
         account                 = st.selectbox("Account", accounts_list)
-        category                = st.selectbox("Category", get_category_list("Expense"))
+        category                = st.selectbox("Category", get_category_list("Income"))
         amount                  = st.number_input("Amount")
-        operation_date          = st.date_input("Date", value="today", format="DD-MM-YYYY")
+        operation_date          = st.date_input("Date", value="today", format="YYYY-MM-DD")
         transaction_description = st.text_input("Comment")
         submitted               = st.form_submit_button("Submit")
     #
@@ -41,12 +41,11 @@ def main():
         data = fetch_data(f"SELECT currency FROM accounts WHERE name='{account}'")
         currency = pd.DataFrame(data).values.tolist()[0][0]
 
-        formatted_date = operation_date.strftime("%d-%m-%Y")
         sql_query = (
             f"INSERT INTO transactions (transaction_type, global_name,"
             f"account, category, amount, currency, transaction_date, transaction_description)"
             f"VALUES ('{transaction_type}', '{transaction_type}', '{account}',"
-            f"'{category}', '{amount}', '{currency}', '{formatted_date}',"
+            f"'{category}', '{amount}', '{currency}', '{operation_date}',"
             f"'{transaction_description}')"
         )
         commit_data(sql_query)
