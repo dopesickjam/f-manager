@@ -9,6 +9,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 # add statistic by category
 # add opportunity to delete a transaction
 def main():
+    st.title(f'Statistic')
     option = st.selectbox(
     'Chose transaction list',
     ('ALL', 'Expense', 'Income', 'Transfer'))

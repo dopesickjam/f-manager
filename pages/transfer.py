@@ -9,6 +9,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 # add opportunity to transfer from UAH to USD
 
 def main():
+    st.title(f'Transfer')
     #
     data = fetch_data("SELECT name FROM accounts")
     accounts_list_raw = pd.DataFrame(data).values.tolist()

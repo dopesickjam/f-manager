@@ -5,8 +5,7 @@ from shared.db import create_sqlite_connection, fetch_data, commit_data
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 def main():
-    st.set_page_config(page_title="Account Table", layout="wide")
-    st.title("Account Table Page")
+    st.title("Wallets")
 
     col1, col2 = st.columns(2)
     #

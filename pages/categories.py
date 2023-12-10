@@ -8,6 +8,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 # add opportunity to set desired order for category, not by alphabet order
 
 def main():
+    st.title("Categories")
     data = fetch_data("SELECT category_name, parent_category, root_category, category_type FROM categories")
 
     #

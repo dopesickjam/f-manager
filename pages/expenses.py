@@ -9,6 +9,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 # category by desired order
 
 def main():
+    st.title(f'Expenses')
     #
     data = fetch_data("SELECT name FROM accounts")
     accounts_list_raw = pd.DataFrame(data).values.tolist()
@@ -19,8 +20,6 @@ def main():
     #
     form_key = "transaction_form"
     with st.form(key=form_key, clear_on_submit=True):
-        transaction_list        = ["Expense"]
-        transaction_type        = st.selectbox("Type", transaction_list)
         account                 = st.selectbox("Account", accounts_list)
         category                = st.selectbox("Category", get_category_list("Expense"))
         amount                  = st.number_input("Amount")
@@ -47,13 +46,13 @@ def main():
         sql_query = (
             f"INSERT INTO transactions (transaction_type, global_name,"
             f"account, category, amount, currency, transaction_date, transaction_description)"
-            f"VALUES ('{transaction_type}', '{transaction_type}', '{account}',"
+            f"VALUES ('Expense', 'Expense', '{account}',"
             f"'{category}', '{amount}', '{currency}', '{operation_date}',"
             f"'{transaction_description}')"
         )
         commit_data(sql_query)
 
-        st.success(f"Transaction '{transaction_type}' added")
+        st.success(f"Transaction added")
         st.code(sql_query, language="sql")
 
 if __name__ == "__main__":
