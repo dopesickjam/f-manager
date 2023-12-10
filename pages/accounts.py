@@ -13,10 +13,7 @@ def main():
     data = fetch_data('SELECT name, balance, currency FROM accounts')
     columns = ["Name", "Balance", "Currency"]
     df = pd.DataFrame(data, columns=columns)
-    #
-    left_column, right_column = st.columns(2)
-    left_column.dataframe(df, width=800)
-    # right_column.dataframe(df["Actions"], width=200)
+    st.dataframe(df)
 
     #
     for index, row in df.iterrows():
