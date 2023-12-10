@@ -20,10 +20,10 @@ def main():
     if on:
         col1, col2 = st.columns(2)
         with col1:
-            to_date = st.date_input("FROM:", value="today", format="YYYY-MM-DD")
-        with col2:
             month = datetime.today() - timedelta(days=30)
-            from_date = st.date_input("TO:", value=month, format="YYYY-MM-DD")
+            from_date = st.date_input("FROM:", value=month, format="YYYY-MM-DD")
+        with col2:
+            to_date = st.date_input("TO:", value="today", format="YYYY-MM-DD")
 
     if option == 'ALL':
         data = fetch_data(f"SELECT transaction_type, account, category, amount, currency, transaction_date, transaction_description FROM transactions WHERE transaction_date BETWEEN '{from_date}' AND '{to_date}'")
