@@ -36,7 +36,6 @@ def main():
         with st.form(key=form_key, clear_on_submit=True):
             transfer_amount         = st.number_input("Transfer Amount", disabled=False)
             operation_date          = st.date_input("Date", value="today", format="YYYY-MM-DD")
-            transaction_description = st.text_input("Comment")
             submitted               = st.form_submit_button("Submit")
     elif currency_from != currency_to:
         with st.form(key=form_key, clear_on_submit=True):
@@ -64,6 +63,8 @@ def main():
         if currency_from == currency_to:
             new_from_balance = current_from_balance - transfer_amount
             new_to_balance   = current_to_balance + transfer_amount
+            #
+            transaction_description = f'+{transfer_amount} {to_account}'
         elif currency_from != currency_to:
             new_from_balance = current_from_balance - transfer_from
             new_to_balance   = current_to_balance + transfer_to
