@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_extras.switch_page_button import switch_page
 import pandas as pd
 import sys, logging
 from shared.db import create_sqlite_connection, fetch_data
@@ -16,6 +17,13 @@ def main():
         summ = balance[0] + summ
 
     st.title(f'{summ} UAH')
+
+    go_to_incomes  = st.button("incomes")
+    go_to_expenses = st.button("expenses")
+    if go_to_incomes:
+        switch_page("incomes")
+    if go_to_expenses:
+        switch_page("incomes")
 
 if __name__ == "__main__":
     main()
