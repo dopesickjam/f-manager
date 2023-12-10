@@ -19,18 +19,18 @@ def main():
     #
     data = fetch_data(f"SELECT category_name FROM categories WHERE root_category='True'")
     parents_list_raw = pd.DataFrame(data).values.tolist()
-    parents_list = ['']
+    parents_list = []
     for category in parents_list_raw:
         category = category[0]
         parents_list.append(category)
     #
     form_key = "category_form"
     with st.form(key=form_key, clear_on_submit=True):
-        category_list = ["", "Income", "Expense"]
-        category_type = st.selectbox("Type", category_list)
+        category_list = ["Income", "Expense"]
+        category_type = st.selectbox("Type", category_list, index=None)
         root_category   = st.checkbox("Set like a root category")
         category_name   = st.text_input("Category Name")
-        parent_category = st.selectbox("Parent Category", parents_list) 
+        parent_category = st.selectbox("Parent Category", parents_list, index=None)
         submitted = st.form_submit_button("Submit")
 
     if submitted:

@@ -20,8 +20,8 @@ def main():
     #
     form_key = "transaction_form"
     with st.form(key=form_key, clear_on_submit=True):
-        account                 = st.selectbox("Account", accounts_list)
-        category                = st.selectbox("Category", get_category_list("Expense"))
+        account                 = st.selectbox("Account", accounts_list, index=None)
+        category                = st.selectbox("Category", get_category_list("Expense"), index=None)
         amount                  = st.number_input("Amount")
         operation_date          = st.date_input("Date", value="today", format="YYYY-MM-DD")
         transaction_description = st.text_input("Comment")

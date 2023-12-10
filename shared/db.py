@@ -22,7 +22,7 @@ def get_category_list(category_type):
     root_category  = fetch_data(f"SELECT category_name FROM categories WHERE root_category='True' AND category_type='{category_type}' ORDER BY category_name")
     child_category = fetch_data(f"SELECT parent_category, category_name FROM categories WHERE root_category='False' AND category_type='{category_type}' ORDER BY parent_category")
     
-    categories_list = ['']
+    categories_list = []
     for parent in root_category:
         categories_list.append(parent[0])
         for child in child_category:

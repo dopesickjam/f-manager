@@ -32,7 +32,7 @@ def main():
         name = st.text_input("Name")
         balance = st.number_input("Balance")
         currency_options = ["UAH", "USD"]
-        currency = st.selectbox("Currency", currency_options)
+        currency = st.selectbox("Currency", currency_options, index=None)
         submitted = st.form_submit_button("Submit")
 
     #
