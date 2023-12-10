@@ -1,26 +1,31 @@
 import streamlit as st
 import pandas as pd
-import sys, logging
+import sys, logging, numpy
 from shared.db import create_sqlite_connection, fetch_data, commit_data
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
-# TO DO:
-# add a drop-down list from which you can select which wallet can be deleted
 def main():
     st.set_page_config(page_title="Account Table", layout="wide")
     st.title("Account Table Page")
-    #
-    data = fetch_data('SELECT name, balance, currency FROM accounts')
-    columns = ["Name", "Balance", "Currency"]
-    df = pd.DataFrame(data, columns=columns)
-    st.dataframe(df)
 
+    col1, col2 = st.columns(2)
     #
-    for index, row in df.iterrows():
-        if st.button(f"Delete {row['Name']}", key=f"delete_{row['Name']}"):
-            commit_data(f"DELETE FROM accounts WHERE name='{row['Name']}'")
-            st.success(f"Deleted row for account '{row['Name']}'")
-            st.rerun()
+    with col1:
+        data = fetch_data('SELECT name, balance, currency FROM accounts')
+        columns = ["Name", "Balance", "Currency"]
+        df = pd.DataFrame(data, columns=columns)
+        st.dataframe(df)
+        on = st.toggle('Activate delete wallet')
+        if on:
+            agree = st.checkbox("I agree")
+    #
+    with col2:
+        if on:
+            for index, row in df.iterrows():
+                if st.button(f"Delete {row['Name']}", key=f"delete_{row['Name']}", disabled=numpy.logical_not(agree)):
+                    commit_data(f"DELETE FROM accounts WHERE name='{row['Name']}'")
+                    st.success(f"Deleted row for account '{row['Name']}'")
+                    st.rerun()
 
     #
     form_key = "account_form"
