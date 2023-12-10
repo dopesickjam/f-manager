@@ -7,7 +7,6 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 # TO do:
 # category by desired order
-# add opportunity to set custom date
 
 def main():
     #
@@ -20,13 +19,14 @@ def main():
     #
     form_key = "transaction_form"
     with st.form(key=form_key, clear_on_submit=True):
-        transaction_list = ["Expense"]
-        transaction_type = st.selectbox("Type", transaction_list)
-        account = st.selectbox("Account", accounts_list) 
-        category = st.selectbox("Category", get_category_list("Expense")) 
-        amount = st.number_input("Amount")
+        transaction_list        = ["Expense"]
+        transaction_type        = st.selectbox("Type", transaction_list)
+        account                 = st.selectbox("Account", accounts_list)
+        category                = st.selectbox("Category", get_category_list("Expense"))
+        amount                  = st.number_input("Amount")
+        operation_date          = st.date_input("Date", value="today", format="DD-MM-YYYY")
         transaction_description = st.text_input("Comment")
-        submitted = st.form_submit_button("Submit")
+        submitted               = st.form_submit_button("Submit")
     #
     if submitted:
         logging.info(submitted)
@@ -44,8 +44,7 @@ def main():
         data = fetch_data(f"SELECT currency FROM accounts WHERE name='{account}'")
         currency = pd.DataFrame(data).values.tolist()[0][0]
 
-        current_datetime = datetime.now()
-        formatted_date = current_datetime.strftime("%d-%m-%Y")
+        formatted_date = operation_date.strftime("%d-%m-%Y")
         sql_query = (
             f"INSERT INTO transactions (transaction_type, global_name,"
             f"account, category, amount, currency, transaction_date, transaction_description)"
