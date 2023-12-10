@@ -19,11 +19,12 @@ def main():
     #
     form_key = "transfer_form"
     with st.form(key=form_key, clear_on_submit=True):
-        from_account    = st.selectbox("From", accounts_list)
-        to_account      = st.selectbox("To", accounts_list)
-        transfer_amount = st.number_input("Transfer Amount")
+        from_account            = st.selectbox("From", accounts_list)
+        to_account              = st.selectbox("To", accounts_list)
+        transfer_amount         = st.number_input("Transfer Amount")
+        operation_date          = st.date_input("Date", value="today", format="DD-MM-YYYY")
         transaction_description = st.text_input("Comment")
-        submitted       = st.form_submit_button("Submit")
+        submitted               = st.form_submit_button("Submit")
     #
     if submitted:
         logging.info(submitted)
@@ -40,8 +41,7 @@ def main():
         commit_data(f"UPDATE accounts SET balance={new_from_balance} WHERE name='{from_account}'")
         commit_data(f"UPDATE accounts SET balance={new_to_balance} WHERE name='{to_account}'")
 
-        current_datetime = datetime.now()
-        formatted_date = current_datetime.strftime("%d-%m-%Y")
+        formatted_date = operation_date.strftime("%d-%m-%Y")
         sql_query = (
             f"INSERT INTO transactions (transaction_type, global_name,"
             f"account, amount, currency, transaction_date, transaction_description)"
