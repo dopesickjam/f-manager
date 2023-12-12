@@ -14,7 +14,7 @@ def main():
     #
     columns = ["Name", "Parent", "Is root?", "Type"]
     df = pd.DataFrame(data, columns=columns)
-    st.dataframe(df)
+    st.dataframe(df, hide_index=True)
 
     #
     data = fetch_data(f"SELECT category_name FROM categories WHERE root_category='True'")

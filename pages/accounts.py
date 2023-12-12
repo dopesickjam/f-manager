@@ -20,7 +20,7 @@ def main():
         data = fetch_data('SELECT name, balance, currency FROM accounts')
         columns = ["Name", "Balance", "Currency"]
         df = pd.DataFrame(data, columns=columns)
-        st.dataframe(df)
+        st.dataframe(df, hide_index=True)
         delete_on = st.toggle('Activate delete wallet')
         add_on    = st.toggle('Activate add wallet')
         if delete_on:
