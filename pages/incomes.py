@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 import sys, logging, sqlite3
+from streamlit_extras.switch_page_button import switch_page
 from shared.db import create_sqlite_connection, fetch_data, commit_data, get_category_list
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
@@ -9,7 +10,13 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 # category by desired order
 
 def main():
-    st.title(f'Incomes')
+    tl1, tl2 = st.columns(2)
+    with tl1:
+        st.title(f'Incomes')
+    with tl2:
+        go_to_main = st.button("main")
+        if go_to_main:
+            switch_page("main")
     #
     data = fetch_data("SELECT name FROM accounts")
     accounts_list_raw = pd.DataFrame(data).values.tolist()

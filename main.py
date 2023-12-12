@@ -18,12 +18,30 @@ def main():
 
     st.title(f'{summ} UAH')
 
+    st.markdown(
+    """
+    <style>
+    button {
+        padding: 10px 20px;
+        min-width: 100%;
+    }
+    </style>
+    """,
+        unsafe_allow_html=True,
+    )
+
+    go_to_accounts = st.button("accounts")
     go_to_incomes  = st.button("incomes")
     go_to_expenses = st.button("expenses")
+    go_to_transfer = st.button("transfer")
+    if go_to_accounts:
+        switch_page("accounts")
     if go_to_incomes:
         switch_page("incomes")
     if go_to_expenses:
-        switch_page("incomes")
+        switch_page("expenses")
+    if go_to_transfer:
+        switch_page("transfer")
 
 if __name__ == "__main__":
     main()
