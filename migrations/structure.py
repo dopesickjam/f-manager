@@ -13,9 +13,9 @@ def create_table_accounts():
     with sqlite3.connect(DB_FILE) as connection:
         cursor = connection.cursor()
         cursor.execute("""
-            CREATE TABLE IF NOT EXISTS accounts ( 
-                name TEXT PRIMARY KEY, 
-                balance REAL, 
+            CREATE TABLE IF NOT EXISTS accounts (
+                name TEXT PRIMARY KEY,
+                balance REAL,
                 currency TEXT
             )
         """)
@@ -26,8 +26,8 @@ def create_table_categories():
         cursor = connection.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS categories (
-                categories_id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                root_category INTEGER, 
+                categories_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                root_category INTEGER,
                 parent_category TEXT,
                 category_name TEXT,
                 category_type TEXT
@@ -40,15 +40,27 @@ def create_table_transactions():
         cursor = connection.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS transactions (
-                transaction_id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                transaction_type TEXT, 
-                global_name TEXT, 
-                account TEXT, 
-                category TEXT, 
-                amount TEXT, 
-                currency TEXT, 
-                transaction_date TEXT, 
+                transaction_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                transaction_type TEXT,
+                global_name TEXT,
+                account TEXT,
+                category TEXT,
+                amount TEXT,
+                currency TEXT,
+                transaction_date TEXT,
                 transaction_description TEXT
+            )
+        """)
+        connection.commit()
+
+def create_table_exchange():
+    with sqlite3.connect(DB_FILE) as connection:
+        cursor = connection.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS exchange (
+                name TEXT PRIMARY KEY,
+                rate REAL,
+                exchange_date TEXT
             )
         """)
         connection.commit()
@@ -62,6 +74,7 @@ def main():
         create_table_accounts()
         create_table_categories()
         create_table_transactions()
+        create_table_exchange()
         logging.info("Migration 1: Init DB structure for the project.")
 
     logging.info("Migrations completed.")
