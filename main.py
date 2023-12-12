@@ -30,10 +30,11 @@ def main():
         unsafe_allow_html=True,
     )
 
-    go_to_accounts = st.button("accounts")
-    go_to_incomes  = st.button("incomes")
-    go_to_expenses = st.button("expenses")
-    go_to_transfer = st.button("transfer")
+    go_to_accounts     = st.button("accounts")
+    go_to_incomes      = st.button("incomes")
+    go_to_expenses     = st.button("expenses")
+    go_to_transfer     = st.button("transfer")
+    go_to_transactions = st.button("transactions")
     if go_to_accounts:
         switch_page("accounts")
     if go_to_incomes:
@@ -42,6 +43,8 @@ def main():
         switch_page("expenses")
     if go_to_transfer:
         switch_page("transfer")
+    if go_to_transactions:
+        switch_page("transactions")
 
 if __name__ == "__main__":
     main()

@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 import sys, logging, sqlite3
+from streamlit_extras.switch_page_button import switch_page
 from shared.db import create_sqlite_connection, fetch_data
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
@@ -9,7 +10,13 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 # add statistic by category
 # add opportunity to delete a transaction
 def main():
-    st.title(f'Statistic')
+    tl1, tl2 = st.columns(2)
+    with tl1:
+        st.title(f'Statistic')
+    with tl2:
+        go_to_main = st.button("main")
+        if go_to_main:
+            switch_page("main")
     option = st.selectbox(
     'Chose transaction list',
     ('ALL', 'Expense', 'Income', 'Transfer'))
