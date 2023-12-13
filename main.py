@@ -23,7 +23,7 @@ def main():
         uah_to_usd = get_exchange_rate()
         commit_data(f"UPDATE exchange SET rate='{uah_to_usd}', exchange_date='{formatted_date}' WHERE name='uah_to_usd'")
     else:
-        logging.info('The record is exactly')
+        pass
         data = fetch_data('SELECT rate FROM exchange')
         uah_to_usd = data[0][0]
 
@@ -39,10 +39,10 @@ def main():
     s1, s2 = st.columns(2)
     with s1:
         st.text(f'{summ_uah} UAH')
-        st.text(f'{sum_usd} UAH')
+        st.text(f'{sum_usd} USD')
     with s2:
-        st.text(f'{summ_uah + sum_usd * uah_to_usd} all in UAH')
-        st.text(f'{sum_usd + summ_uah / uah_to_usd} all in USD')
+        st.text(f'{"{:.2f}".format(summ_uah + sum_usd * uah_to_usd)} all in UAH')
+        st.text(f'{"{:.2f}".format(sum_usd + summ_uah / uah_to_usd)} all in USD')
 
     st.markdown(
     """
