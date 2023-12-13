@@ -76,7 +76,7 @@ def main():
             new_from_balance = current_from_balance - transfer_from
             new_to_balance   = current_to_balance + transfer_to
             # for transaction
-            transfer_amount         = f'-{transfer_from}'
+            transfer_amount         = transfer_from
             transaction_description = f'+{transfer_to} {to_account}'
 
         commit_data(f"UPDATE accounts SET balance={new_from_balance} WHERE name='{from_account}'")

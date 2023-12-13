@@ -3,12 +3,12 @@ import pandas as pd
 from datetime import datetime, timedelta
 import sys, logging, sqlite3
 from streamlit_extras.switch_page_button import switch_page
-from shared.db import create_sqlite_connection, fetch_data
+from shared.db import create_sqlite_connection, fetch_data, commit_data
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 # TO DO
 # add statistic by category
-# add opportunity to delete a transaction
+# add update transaction
 def main():
     tl1, tl2 = st.columns(2)
     with tl1:
@@ -49,6 +49,50 @@ def main():
         for transaction in data:
             summ = summ + float(transaction[3])
         st.text(f'Summ of {option}s: {summ}')
+
+    transaction_on = st.toggle('Activate modify on transaction')
+    if transaction_on:
+        transaction_to = st.selectbox('Chose transaction', data, index=None)
+
+        delete = st.toggle('Delete?')
+        update = st.toggle('Update?')
+        if delete:
+            delete_button = st.button('Delete!')
+
+            if delete_button:
+                transaction_type = transaction_to[0]
+                account          = transaction_to[1]
+                category         = transaction_to[2]
+                amount           = transaction_to[3]
+                currency         = transaction_to[4]
+                transaction_date = transaction_to[5]
+                comment          = transaction_to[6]
+
+                logging.info('Delete operations')
+                if transaction_type == 'Transfer':
+                    commit_data(f"DELETE FROM transactions WHERE transaction_type='{transaction_type}' AND account='{account}' AND category IS NULL AND amount='{amount}' AND currency='{currency}' AND transaction_date='{transaction_date}'")
+                else:
+                    commit_data(f"DELETE FROM transactions WHERE transaction_type='{transaction_type}' AND account='{account}' AND category='{category}' AND amount='{amount}' AND currency='{currency}' AND transaction_date='{transaction_date}'")
+                logging.info('Transaction is deleted')
+
+                data = fetch_data(f"SELECT balance FROM accounts WHERE name='{account}'")
+                current_balance = pd.DataFrame(data).values.tolist()[0][0]
+                logging.info(f'Current balance at {account}: {current_balance}')
+
+                if transaction_type == 'Expense':
+                    new_balance = current_balance + float(amount)
+                elif transaction_type == 'Income':
+                    new_balance = current_balance - float(amount)
+                elif transaction_type == 'Transfer':
+                    new_balance = current_balance + float(amount)
+                    data = fetch_data(f"SELECT balance FROM accounts WHERE name='{comment.split(' ')[1]}'")
+                    revert_balance = data[0][0] - float(comment.split(' ')[0][1:])
+                    commit_data(f"UPDATE accounts SET balance={revert_balance} WHERE name='{comment.split(' ')[1]}'")
+                    logging.info(f"Balance is revert at {comment.split(' ')[1]}, new balance: {revert_balance}")
+
+                commit_data(f"UPDATE accounts SET balance={new_balance} WHERE name='{account}'")
+                logging.info(f'Balance is updated at {account}, new balance: {new_balance}')
+                st.rerun()
 
 if __name__ == "__main__":
     main()
