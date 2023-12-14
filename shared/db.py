@@ -1,7 +1,7 @@
 import sqlite3
 
 def create_sqlite_connection():
-    return sqlite3.connect("local.db")
+    return sqlite3.connect("db/local.db")
 
 def fetch_data(sql):
     connection = create_sqlite_connection()
