@@ -6,13 +6,7 @@ from shared.db import create_sqlite_connection, fetch_data, commit_data
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 def main():
-    tl1, tl2 = st.columns(2)
-    with tl1:
-        st.title("Wallets")
-    with tl2:
-        go_to_main = st.button("main")
-        if go_to_main:
-            switch_page("main")
+    st.title("Wallets")
 
     col1, col2 = st.columns(2)
     #
@@ -52,6 +46,21 @@ def main():
             st.success(f"Account '{name}' added with balance {balance} {currency}")
             st.code(sql_query, language="sql")
             st.rerun()
+
+    st.markdown(
+    """
+    <style>
+    button {
+        padding: 10px 20px;
+        min-width: 100%;
+    }
+    </style>
+    """,
+        unsafe_allow_html=True,
+    )
+    go_to_main = st.button("go to main")
+    if go_to_main:
+        switch_page("main")
 
 if __name__ == "__main__":
     main()
