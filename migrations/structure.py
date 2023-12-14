@@ -1,7 +1,7 @@
 import sys, logging, os, sqlite3
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-DB_FILE = "local.db"
+DB_FILE = "db/local.db"
 
 def create_database():
     """Create an SQLite database file."""
