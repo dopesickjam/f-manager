@@ -87,17 +87,6 @@ def main():
 
         st.success(f"Transfer added")
 
-    st.markdown(
-    """
-    <style>
-    button {
-        padding: 10px 20px;
-        min-width: 100%;
-    }
-    </style>
-    """,
-        unsafe_allow_html=True,
-    )
     go_to_main = st.button("go to main")
     if go_to_main:
         switch_page("main")
