@@ -10,6 +10,20 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 # TO do:
 # more statistic (by day, last month, current month, etc)
 
+def sum_of_all_transaction(category_type):
+    data = fetch_data(f"SELECT category_name FROM categories WHERE category_type='{category_type}'")
+    uah = 0
+    usd = 0
+    for element in data:
+        data = fetch_data(f"SELECT category, amount, currency FROM transactions WHERE category='{element[0]}' AND transaction_type='{category_type}'")
+
+        for transaction in data:
+            if transaction[2] == 'UAH':
+                uah = uah + float(transaction[1])
+            elif transaction[2] == 'USD':
+                usd = usd + float(transaction[1])
+    return "{:.2f}".format(uah), "{:.2f}".format(usd)
+
 def main():
     current_datetime = datetime.now()
     formatted_date = current_datetime.strftime("%Y-%m-%d")
@@ -71,6 +85,17 @@ def main():
         switch_page("transfer")
     if go_to_transactions:
         switch_page("transactions")
+
+    uah_expense, usd_expense = sum_of_all_transaction('Expense')
+    uah_income, usd_income   = sum_of_all_transaction('Income')
+    t1, t2 = st.columns(2)
+    with t1:
+        st.text(f'All expense: {uah_expense} UAH')
+        st.text(f'All expense: {usd_expense} USD')
+
+    with t2:
+        st.text(f'All income: {uah_income} UAH')
+        st.text(f'All income: {usd_income} USD')
 
 if __name__ == "__main__":
     main()
