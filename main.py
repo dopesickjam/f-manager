@@ -38,8 +38,8 @@ def main():
 
     s1, s2 = st.columns(2)
     with s1:
-        st.text(f'{summ_uah} UAH')
-        st.text(f'{sum_usd} USD')
+        st.text(f'{"{:.2f}".format(summ_uah)} UAH')
+        st.text(f'{"{:.2f}".format(sum_usd)} USD')
     with s2:
         st.text(f'{"{:.2f}".format(summ_uah + sum_usd * uah_to_usd)} all in UAH')
         st.text(f'{"{:.2f}".format(sum_usd + summ_uah / uah_to_usd)} all in USD')
