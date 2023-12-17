@@ -50,13 +50,13 @@ def main():
         elif balance[1] == 'USD':
             sum_usd = balance[0] + sum_usd
 
-    s1, s2 = st.columns(2)
-    with s1:
-        st.text(f'{"{:.2f}".format(summ_uah)} UAH')
-        st.text(f'{"{:.2f}".format(sum_usd)} USD')
-    with s2:
-        st.text(f'{"{:.2f}".format(summ_uah + sum_usd * uah_to_usd)} all in UAH')
-        st.text(f'{"{:.2f}".format(sum_usd + summ_uah / uah_to_usd)} all in USD')
+    df = pd.DataFrame(
+        {
+            "sum by currency": [f'{"{:.2f}".format(summ_uah)} UAH', f'{"{:.2f}".format(sum_usd)} USD'],
+            "all sum in currency": [f'{"{:.2f}".format(summ_uah + sum_usd * uah_to_usd)} UAH', f'{"{:.2f}".format(sum_usd + summ_uah / uah_to_usd)} USD'],
+        }
+    )
+    st.dataframe(df, hide_index=True, use_container_width=True)
 
     st.markdown(
     """
@@ -88,14 +88,14 @@ def main():
 
     uah_expense, usd_expense = sum_of_all_transaction('Expense')
     uah_income, usd_income   = sum_of_all_transaction('Income')
-    t1, t2 = st.columns(2)
-    with t1:
-        st.text(f'All expense: {uah_expense} UAH')
-        st.text(f'All expense: {usd_expense} USD')
 
-    with t2:
-        st.text(f'All income: {uah_income} UAH')
-        st.text(f'All income: {usd_income} USD')
+    df = pd.DataFrame(
+        {
+            "all expense": [f'{uah_expense} UAH', f'{usd_expense} USD'],
+            "all income": [f'{uah_income} UAH', f'{usd_income} USD'],
+        }
+    )
+    st.dataframe(df, hide_index=True, use_container_width=True)
 
 if __name__ == "__main__":
     main()

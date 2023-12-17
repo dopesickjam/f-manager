@@ -10,23 +10,21 @@ def main():
 
     col1, col2 = st.columns(2)
     #
-    with col1:
-        data = fetch_data('SELECT name, balance, currency FROM accounts')
-        columns = ["Name", "Balance", "Currency"]
-        df = pd.DataFrame(data, columns=columns)
-        st.dataframe(df, hide_index=True)
-        delete_on = st.toggle('Activate delete wallet')
-        add_on    = st.toggle('Activate add wallet')
-        if delete_on:
-            agree = st.checkbox("I agree")
+    data = fetch_data('SELECT name, balance, currency FROM accounts')
+    columns = ["Name", "Balance", "Currency"]
+    df = pd.DataFrame(data, columns=columns)
+    st.dataframe(df, hide_index=True, use_container_width=True)
+    delete_on = st.toggle('Activate delete wallet')
+    add_on    = st.toggle('Activate add wallet')
+    if delete_on:
+        agree = st.checkbox("I agree")
     #
-    with col2:
-        if delete_on:
-            for index, row in df.iterrows():
-                if st.button(f"Delete {row['Name']}", key=f"delete_{row['Name']}", disabled=numpy.logical_not(agree)):
-                    commit_data(f"DELETE FROM accounts WHERE name='{row['Name']}'")
-                    st.success(f"Deleted row for account '{row['Name']}'")
-                    st.rerun()
+    if delete_on:
+        for index, row in df.iterrows():
+            if st.button(f"Delete {row['Name']}", key=f"delete_{row['Name']}", disabled=numpy.logical_not(agree)):
+                commit_data(f"DELETE FROM accounts WHERE name='{row['Name']}'")
+                st.success(f"Deleted row for account '{row['Name']}'")
+                st.rerun()
 
     #
     if add_on:

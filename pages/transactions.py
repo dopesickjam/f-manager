@@ -38,7 +38,7 @@ def main():
     #
     columns = ["Type", "Account", "Category", "Amount", "Currency", "Date", "Comment"]
     df = pd.DataFrame(data, columns=columns)
-    st.dataframe(df, hide_index=True)
+    st.dataframe(df, hide_index=True, use_container_width=True)
     summ = 0
     if option == 'Expense' or option == 'Income':
         for transaction in data:
