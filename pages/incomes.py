@@ -6,9 +6,6 @@ from streamlit_extras.switch_page_button import switch_page
 from shared.db import create_sqlite_connection, fetch_data, commit_data, get_category_list
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
-# TO do:
-# category by desired order
-
 def main():
     st.title(f'Incomes')
     #

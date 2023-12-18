@@ -7,9 +7,6 @@ from shared.db import create_sqlite_connection, fetch_data, commit_data
 from shared.api import get_exchange_rate
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
-# TO do:
-# more statistic (by day, last month, current month, etc)
-
 def sum_of_all_transaction(category_type):
     data = fetch_data(f"SELECT category_name FROM categories WHERE category_type='{category_type}'")
     uah = 0
@@ -96,6 +93,30 @@ def main():
         }
     )
     st.dataframe(df, hide_index=True, use_container_width=True)
+
+    statistic_expense = st.toggle('Expense statistic by category')
+    statistic_income  = st.toggle('Income statistic by category')
+    if statistic_expense:
+        data = fetch_data(f"SELECT category_name FROM categories WHERE category_type='Expense'")
+    if statistic_income:
+        data = fetch_data(f"SELECT category_name FROM categories WHERE category_type='Income'")
+    statistic_uah = {}
+    statistic_usd = {}
+    for element in data:
+        data = fetch_data(f"SELECT amount, currency FROM transactions WHERE category='{element[0]}'")
+        summ_uah = 0
+        summ_usd = 0
+        for amount in data:
+            if amount[1] == 'UAH':
+                summ_uah = summ_uah + float(amount[0])
+            elif amount[1] == 'USD':
+                summ_usd = summ_usd + float(amount[0])
+        statistic_uah[element[0]] = summ_uah
+        statistic_usd[element[0]] = summ_usd
+
+    if statistic_expense or statistic_income:
+        st.dataframe(statistic_uah, hide_index=False, use_container_width=True)
+        st.dataframe(statistic_usd, hide_index=False, use_container_width=True)
 
 if __name__ == "__main__":
     main()
