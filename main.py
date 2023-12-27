@@ -72,6 +72,7 @@ def main():
     go_to_expenses     = st.button("expenses")
     go_to_transfer     = st.button("transfer")
     go_to_transactions = st.button("transactions")
+    go_to_reports      = st.button("reports")
     if go_to_accounts:
         switch_page("accounts")
     if go_to_incomes:
@@ -82,6 +83,8 @@ def main():
         switch_page("transfer")
     if go_to_transactions:
         switch_page("transactions")
+    if go_to_reports:
+        switch_page("reports")
 
     uah_expense, usd_expense = sum_of_all_transaction('Expense')
     uah_income, usd_income   = sum_of_all_transaction('Income')
@@ -93,30 +96,6 @@ def main():
         }
     )
     st.dataframe(df, hide_index=True, use_container_width=True)
-
-    statistic_expense = st.toggle('Expense statistic by category')
-    statistic_income  = st.toggle('Income statistic by category')
-    if statistic_expense:
-        data = fetch_data(f"SELECT category_name FROM categories WHERE category_type='Expense'")
-    if statistic_income:
-        data = fetch_data(f"SELECT category_name FROM categories WHERE category_type='Income'")
-    statistic_uah = {}
-    statistic_usd = {}
-    for element in data:
-        data = fetch_data(f"SELECT amount, currency FROM transactions WHERE category='{element[0]}'")
-        summ_uah = 0
-        summ_usd = 0
-        for amount in data:
-            if amount[1] == 'UAH':
-                summ_uah = summ_uah + float(amount[0])
-            elif amount[1] == 'USD':
-                summ_usd = summ_usd + float(amount[0])
-        statistic_uah[element[0]] = summ_uah
-        statistic_usd[element[0]] = summ_usd
-
-    if statistic_expense or statistic_income:
-        st.dataframe(statistic_uah, hide_index=False, use_container_width=True)
-        st.dataframe(statistic_usd, hide_index=False, use_container_width=True)
 
 if __name__ == "__main__":
     main()
