@@ -7,7 +7,7 @@ from shared.db import create_sqlite_connection, fetch_data, commit_data
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 def main():
-    st.title(f'Statistic')
+    st.title(f'Transactions')
 
     option = st.selectbox(
     'Chose transaction list',
@@ -23,24 +23,24 @@ def main():
 
     if on:
         if option == 'ALL':
-            data = fetch_data(f"SELECT transaction_type, account, category, amount, currency, transaction_date, transaction_description FROM transactions WHERE transaction_date BETWEEN '{from_date}' AND '{to_date}'")
+            data = fetch_data(f"SELECT transaction_id, transaction_type, account, category, amount, currency, transaction_date, transaction_description FROM transactions WHERE transaction_date BETWEEN '{from_date}' AND '{to_date}'")
         else:
-            data = fetch_data(f"SELECT transaction_type, account, category, amount, currency, transaction_date, transaction_description FROM transactions WHERE transaction_type='{option}' AND transaction_date BETWEEN '{from_date}' AND '{to_date}'")
+            data = fetch_data(f"SELECT transaction_id, transaction_type, account, category, amount, currency, transaction_date, transaction_description FROM transactions WHERE transaction_type='{option}' AND transaction_date BETWEEN '{from_date}' AND '{to_date}'")
     else:
         if option == 'ALL':
-            data = fetch_data(f"SELECT transaction_type, account, category, amount, currency, transaction_date, transaction_description FROM transactions")
+            data = fetch_data(f"SELECT transaction_id, transaction_type, account, category, amount, currency, transaction_date, transaction_description FROM transactions")
         else:
-            data = fetch_data(f"SELECT transaction_type, account, category, amount, currency, transaction_date, transaction_description FROM transactions WHERE transaction_type='{option}'")
+            data = fetch_data(f"SELECT transaction_id, transaction_type, account, category, amount, currency, transaction_date, transaction_description FROM transactions WHERE transaction_type='{option}'")
 
     #
-    columns = ["Type", "Account", "Category", "Amount", "Currency", "Date", "Comment"]
+    columns = ["ID", "Type", "Account", "Category", "Amount", "Currency", "Date", "Comment"]
     df = pd.DataFrame(data, columns=columns)
     st.dataframe(df, hide_index=True, use_container_width=True)
     summ = 0
     if option == 'Expense' or option == 'Income':
         for transaction in data:
-            summ = summ + float(transaction[3])
-        st.text(f'Summ of {option}s: {summ}')
+            summ = summ + float(transaction[4])
+        st.text(f'Summ of {option}s: {"{:.2f}".format(summ)}')
 
     transaction_on = st.toggle('Activate modify on transaction')
     if transaction_on:
