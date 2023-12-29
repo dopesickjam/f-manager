@@ -52,13 +52,14 @@ def main():
             delete_button = st.button('Delete!')
 
             if delete_button:
-                transaction_type = transaction_to[0]
-                account          = transaction_to[1]
-                category         = transaction_to[2]
-                amount           = transaction_to[3]
-                currency         = transaction_to[4]
-                transaction_date = transaction_to[5]
-                comment          = transaction_to[6]
+                transaction_id   = transaction_to[0]
+                transaction_type = transaction_to[1]
+                account          = transaction_to[2]
+                category         = transaction_to[3]
+                amount           = transaction_to[4]
+                currency         = transaction_to[5]
+                transaction_date = transaction_to[6]
+                comment          = transaction_to[7]
 
                 logging.info('Delete operations')
                 if transaction_type == 'Transfer':
