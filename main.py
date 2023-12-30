@@ -7,18 +7,15 @@ from shared.db import create_sqlite_connection, fetch_data, commit_data
 from shared.api import get_exchange_rate
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
-def sum_of_all_transaction(category_type):
-    data = fetch_data(f"SELECT category_name FROM categories WHERE category_type='{category_type}'")
+def sum_of_all_transaction(transaction_type):
+    data = fetch_data(f"SELECT amount, currency FROM transactions WHERE transaction_type='{transaction_type}'")
     uah = 0
     usd = 0
     for element in data:
-        data = fetch_data(f"SELECT category, amount, currency FROM transactions WHERE category='{element[0]}' AND transaction_type='{category_type}'")
-
-        for transaction in data:
-            if transaction[2] == 'UAH':
-                uah = uah + float(transaction[1])
-            elif transaction[2] == 'USD':
-                usd = usd + float(transaction[1])
+        if element[1] == 'UAH':
+            uah = uah + float(element[0])
+        elif element[1] == 'USD':
+            usd = usd + float(element[0])
     return "{:.2f}".format(uah), "{:.2f}".format(usd)
 
 def main():

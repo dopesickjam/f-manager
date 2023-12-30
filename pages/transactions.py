@@ -62,10 +62,7 @@ def main():
                 comment          = transaction_to[7]
 
                 logging.info('Delete operations')
-                if transaction_type == 'Transfer':
-                    commit_data(f"DELETE FROM transactions WHERE transaction_type='{transaction_type}' AND account='{account}' AND category IS NULL AND amount='{amount}' AND currency='{currency}' AND transaction_date='{transaction_date}'")
-                else:
-                    commit_data(f"DELETE FROM transactions WHERE transaction_type='{transaction_type}' AND account='{account}' AND category='{category}' AND amount='{amount}' AND currency='{currency}' AND transaction_date='{transaction_date}'")
+                commit_data(f"DELETE FROM transactions WHERE transaction_id='{transaction_id}'")
                 logging.info('Transaction is deleted')
 
                 data = fetch_data(f"SELECT balance FROM accounts WHERE name='{account}'")
