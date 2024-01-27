@@ -17,17 +17,20 @@ def main():
         with col2:
             to_date = st.date_input("TO:", value="today", format="YYYY-MM-DD")
 
+    statistic_type = ''
     if statistic_expense:
         data = fetch_data(f"SELECT category_name FROM categories WHERE category_type='Expense'")
+        statistic_type = 'Expense'
     if statistic_income:
         data = fetch_data(f"SELECT category_name FROM categories WHERE category_type='Income'")
+        statistic_type = 'Income'
     statistic_uah = {}
     statistic_usd = {}
     for element in data:
         if on:
-            data = fetch_data(f"SELECT amount, currency FROM transactions WHERE category='{element[0]}' AND transaction_date BETWEEN '{from_date}' AND '{to_date}'")
+            data = fetch_data(f"SELECT amount, currency FROM transactions WHERE category='{element[0]}' AND transaction_type='{statistic_type}' AND transaction_date BETWEEN '{from_date}' AND '{to_date}'")
         else:
-            data = fetch_data(f"SELECT amount, currency FROM transactions WHERE category='{element[0]}'")
+            data = fetch_data(f"SELECT amount, currency FROM transactions WHERE category='{element[0]}' AND transaction_type='{statistic_type}'")
         summ_uah = 0
         summ_usd = 0
         for amount in data:
