@@ -5,8 +5,11 @@ from datetime import datetime, timedelta
 
 def main():
     data = ''
-    statistic_expense = st.toggle('Expense statistic by category')
-    statistic_income  = st.toggle('Income statistic by category')
+    c1, c2 = st.columns(2)
+    with c1:
+        statistic_expense = st.toggle('Expense statistic by category')
+    with c2:
+        statistic_income  = st.toggle('Income statistic by category')
 
     on = st.toggle('More filters:')
     if on:

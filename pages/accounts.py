@@ -14,8 +14,10 @@ def main():
     columns = ["Name", "Balance", "Currency"]
     df = pd.DataFrame(data, columns=columns)
     st.dataframe(df, hide_index=True, use_container_width=True)
-    delete_on = st.toggle('Activate delete wallet')
-    add_on    = st.toggle('Activate add wallet')
+    with col1:
+        delete_on = st.toggle('Activate delete wallet')
+    with col2:
+        add_on    = st.toggle('Activate add wallet')
     if delete_on:
         agree = st.checkbox("I agree")
     #
