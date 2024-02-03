@@ -65,6 +65,21 @@ def create_table_exchange():
         """)
         connection.commit()
 
+def create_table_debt():
+    with sqlite3.connect(DB_FILE) as connection:
+        cursor = connection.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS debt (
+                debt_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                debt_name TEXT,
+                type TEXT,
+                amount TEXT,
+                currency TEXT,
+                transaction_description TEXT
+            )
+        """)
+        connection.commit()
+
 def main():
     create_database()
     logging.info(f"Created database file: {DB_FILE}")
@@ -75,6 +90,7 @@ def main():
         create_table_categories()
         create_table_transactions()
         create_table_exchange()
+        create_table_debt()
         logging.info("Migration 1: Init DB structure for the project.")
 
     logging.info("Migrations completed.")

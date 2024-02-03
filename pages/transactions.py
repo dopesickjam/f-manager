@@ -11,7 +11,7 @@ def main():
 
     option = st.selectbox(
     'Chose transaction list',
-    ('ALL', 'Expense', 'Income', 'Transfer'))
+    ('ALL', 'Expense', 'Income', 'Transfer', 'Debt'))
     on = st.toggle('More filters:')
     if on:
         col1, col2 = st.columns(2)
@@ -66,7 +66,7 @@ def main():
                 logging.info('Transaction is deleted')
 
                 data = fetch_data(f"SELECT balance FROM accounts WHERE name='{account}'")
-                current_balance = pd.DataFrame(data).values.tolist()[0][0]
+                current_balance = data[0][0]
                 logging.info(f'Current balance at {account}: {current_balance}')
 
                 if transaction_type == 'Expense':
@@ -79,6 +79,16 @@ def main():
                     revert_balance = data[0][0] - float(comment.split(' ')[0][1:])
                     commit_data(f"UPDATE accounts SET balance={revert_balance} WHERE name='{comment.split(' ')[1]}'")
                     logging.info(f"Balance is revert at {comment.split(' ')[1]}, new balance: {revert_balance}")
+                elif transaction_type == 'Debt':
+                    data = fetch_data(f"SELECT amount FROM debt WHERE debt_name='{comment}' AND currency='{currency}' AND type='{category}'")
+                    if category == 'Lend':
+                        revert_balance = float(data[0][0]) - float(amount)
+                        new_balance = current_balance + float(amount)
+                    elif category == 'Borrow':
+                        revert_balance = float(data[0][0]) - float(amount)
+                        new_balance = current_balance - float(amount)
+                    commit_data(f"UPDATE debt SET amount={revert_balance} WHERE debt_name='{comment}' AND type='{category}' AND currency='{currency}'")
+                    logging.info(f"Balance is revert at {account}, new balance: {revert_balance}")
 
                 commit_data(f"UPDATE accounts SET balance={new_balance} WHERE name='{account}'")
                 logging.info(f'Balance is updated at {account}, new balance: {new_balance}')
