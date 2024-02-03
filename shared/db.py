@@ -29,3 +29,15 @@ def get_category_list(category_type):
             if parent[0] == child[0]:
                 categories_list.append(f"{parent[0]}/{child[1]}")
     return categories_list
+
+def get_wallets(currency=None):
+    if currency:
+        data = fetch_data(f"SELECT name FROM accounts WHERE currency='{currency}'")
+    else:
+        data = fetch_data("SELECT name FROM accounts")
+    accounts_list = []
+    for account in data:
+        account = account[0]
+        accounts_list.append(account)
+        
+    return accounts_list

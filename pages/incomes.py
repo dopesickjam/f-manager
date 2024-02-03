@@ -3,22 +3,15 @@ import pandas as pd
 from datetime import datetime
 import sys, logging, sqlite3
 from streamlit_extras.switch_page_button import switch_page
-from shared.db import create_sqlite_connection, fetch_data, commit_data, get_category_list
+from shared.db import create_sqlite_connection, fetch_data, commit_data, get_category_list, get_wallets
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 def main():
     st.title(f'Incomes')
     #
-    data = fetch_data("SELECT name FROM accounts")
-    accounts_list_raw = pd.DataFrame(data).values.tolist()
-    accounts_list = []
-    for account in accounts_list_raw:
-        account = account[0]
-        accounts_list.append(account)
-    #
     form_key = "transaction_form"
     with st.form(key=form_key, clear_on_submit=True):
-        account                 = st.selectbox("Account", accounts_list, index=None)
+        account                 = st.selectbox("Account", get_wallets(), index=None)
         category                = st.selectbox("Category", get_category_list("Income"), index=None)
         amount                  = st.number_input("Amount")
         operation_date          = st.date_input("Date", value="today", format="YYYY-MM-DD")
