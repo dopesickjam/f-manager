@@ -15,7 +15,7 @@ def main():
     if on:
         col1, col2 = st.columns(2)
         with col1:
-            month = datetime.today() - timedelta(days=30)
+            month = datetime.today().replace(day=1)
             from_date = st.date_input("FROM:", value=month, format="YYYY-MM-DD")
         with col2:
             to_date = st.date_input("TO:", value="today", format="YYYY-MM-DD")
