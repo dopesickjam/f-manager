@@ -1,5 +1,0 @@
-name: 'F-Manager'
-description: Build docker image'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
