@@ -13,7 +13,7 @@ jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
     outputs:
-      image-tags: ${{ env.IMAGE_TAG }}
+      image-tag: ${{ steps.tag.outputs.image_tag }}
     permissions:
       contents: read
       packages: write
@@ -32,13 +32,15 @@ jobs:
     - name: Docker TAG
       id: tag
       run: |
-        IMAGE_TAG=$(echo ${{ github.event.pull_request.head.sha }} | head -c7)
+        IMAGE_TAG=$(echo ${{ github.sha }} | head -c7)
         echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+        echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
     - name: Docker meta
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: ${{ steps.tag.outputs.image_tag }}
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
@@ -68,7 +70,7 @@ jobs:
         ls -la
         cd "f-manager/"
         ls -la
-        yq -i ".image.tag = \"${{ needs.build-and-push-image.outputs.image-tags }}\"" values.yaml
+        yq -i ".image.tag = \"${{ needs.build-and-push-image.outputs.image-tag }}\"" values.yaml
         
         # Commit
         if [[ -z $(git status -s) ]]; then
