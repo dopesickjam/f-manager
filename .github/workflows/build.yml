@@ -67,10 +67,8 @@ jobs:
 
     - name: Commit new version to Argo repo
       run: |
-        ls -la
-        cd "f-manager/"
-        ls -la
-        yq -i ".image.tag = \"${{ needs.build-and-push-image.outputs.image-tag }}\"" values.yaml
+        ls -la f-manager/values.yaml
+        yq -i ".image.tag = \"${{ needs.build-and-push-image.outputs.image-tag }}\"" f-manager/values.yaml
         
         # Commit
         if [[ -z $(git status -s) ]]; then
