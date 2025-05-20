@@ -12,6 +12,8 @@ env:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
+    outputs:
+      image-tags: ${{ steps.meta.outputs.tags }}
     permissions:
       contents: read
       packages: write
@@ -58,8 +60,9 @@ jobs:
 
     - name: Commit new version to Argo repo
       run: |
+        ls -la
         cd "f-manager/"
-        yq -i ".image.tag = \"${{ steps.meta.outputs.tags }}\"" values.yaml
+        yq -i ".image.tag = \"${{ needs.build-and-push-image.outputs.image-tags }}\"" values.yaml
         
         # Commit
         if [[ -z $(git status -s) ]]; then
