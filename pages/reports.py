@@ -70,7 +70,7 @@ def main():
     if monthly:
       option = st.selectbox(
         "YEAR",
-        ("2021", "2022", "2023", "2024"),
+        ("2021", "2022", "2023", "2024", "2025"),
       )
 
       statistic_frame_uah = []

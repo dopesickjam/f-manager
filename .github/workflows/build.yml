@@ -41,3 +41,38 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/arm64/v8
+
+  update-repo-tag:
+    runs-on: ubuntu-latest
+    environment: main
+    needs: build-and-push-image
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: 'dopesickjam/argo'
+        ref: 'main'
+        ssh-key: ${{ secrets.CICD_PRIVATE_KEY }}
+
+    - name: Install YQ
+      run: sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
+
+    - name: Commit new version to Argo repo
+      run: |
+        cd "f-manager/"
+        yq -i ".image.tag = \"${{ steps.meta.outputs.tags }}\"" values.yaml
+        
+        # Commit
+        if [[ -z $(git status -s) ]]; then
+          echo "Nothing to deploy"
+          exit 0
+        fi
+        
+        git config --global user.name 'Dopesick Jam (Github) CI/CD'
+        git config --global user.email 'dopesickjam@gmail.com'
+        
+        git add f-manager/values.yaml
+        git commit -s -m "🤖:octocat: Automated CI/CD commit 🟢
+        Bump F-Manger tags
+          To: ${{ steps.meta.outputs.tags }}
+        "
+        git push
