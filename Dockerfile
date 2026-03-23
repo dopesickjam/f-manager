@@ -1,4 +1,5 @@
-FROM arm64v8/python:3.12.2-slim-bookworm
+#FROM arm64v8/python:3.12.2-slim-bookworm
+FROM python:3.12.2-slim-bookworm
 
 RUN groupadd --gid 1000 -r app \
     && useradd --uid 1000 -m -s /bin/bash -g app app
